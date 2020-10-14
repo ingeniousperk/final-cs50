@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Link Ready
+{% endblock %}
+
+{% block main %}
+    {% if resdata %}
+    <h4>Your reserved links</h4> <br>
+    <table class="table table-borderless text-left">
+        <tr>
+            <th class="text-success" style="width: 35%;">Reserved link</th>
+            <th class="text-primary" style="width: 45%;">Insert link</th>
+            <th style="width: 20%;">Action</th>
+        </tr>
+        <script>
+            function editongo(myid, url) {
+                theform = document.getElementById(myid);
+                theform.action = url;
+                theform.submit();
+            }
+        </script>
+        {% for i in range(resdata|length) %}
+        <tr>
+            {% set myid = 'form' + i|string %}
+            {% set longname = 'longurl' + i|string %}
+            {% set customname = 'customurl' + i|string %}
+            {% set customurl = resdata[i]['short'] %}
+            <td>sulai.pw/{{customurl}}</a></td>
+            <td>
+                <form method="post" class="d-inline-block m-auto" id="{{myid}}">
+                    <input autocomplete="off" class="form-control" name="{{longname}}" placeholder="Your long link" type="text">
+                    <input type="hidden" name="{{customname}}" value='{{customurl}}'>
+                </form>
+            </td>
+            <td>
+                <div class="dropdown d-inline-block m-auto">
+                    <button class="btn btn-light btn-sm dropdown-toggle" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% set urlcust = url_for('edit',foreign=True,action='custom',longname=longname,customname=customname) %}
+                        {% set urldel = url_for('edit',foreign=True,action='delete',longname=longname,customname=customname) %}
+                        <a class="dropdown-item" href="javascript:;"
+                            onclick="return editongo('{{myid}}', '{{urlcust}}')" selected>Submit</a>
+                        <a class="dropdown-item" href="javascript:;"
+                            onclick="return editongo('{{myid}}', '{{urldel}}')">Delete</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <br><br>
+    <h4>Your created links</h4> <br>
+    <table class="table table-borderless text-left mb-5">
+        <tr>
+            <th class="text-success" style="width: 35%;">Shortened link</th>
+            <th class="text-primary" style="width: 45%;">Original link</th>
+            <th style="width: 20%;">Action</th>
+        </tr>
+        <script>
+            function editongo2(url) {
+                theform = document.getElementById("linkform");
+                theform.action = url;
+                theform.submit();
+            }
+        </script>
+        {% for data in linkdata %}
+        <tr>
+            {% set customurl = data['short'] %}
+            {% set longurl = data['original'] %}
+            <td><a href='{{customurl}}' target='_blank'>sulai.pw/{{customurl}}</a></td>
+            <td><a href='{{longurl}}' target='_blank' style="font-size: .75rem; text-decoration: none">{{longurl}}</a></td>
+            <td>
+                <form method="post" class="d-inline-block" id="linkform">
+                    <input type="hidden" name='{{customurl}}' value='{{customurl}}'>
+                </form>
+                <div class="dropdown d-inline-block m-auto">
+                    <button class="btn btn-light btn-sm dropdown-toggle" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{{url_for('edit',longurl=longurl,customurl=customurl)}}">Edit</a>
+                        {% set url = url_for('edit',foreign=True,action='delete',customname=customurl) %}
+                        <a class="dropdown-item" href="javascript:;"
+                            onclick="editongo2('{{url}}')">Delete</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

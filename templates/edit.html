@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Customize URL
+{% endblock %}
+
+{% block main %}
+    <h4>Customize your URL</h4> <br>
+    <script>
+        function validateform() {
+            var customurl = document.getElementById("customurl");
+            if (! customurl.value) {
+                alert("You must provide a url");
+                return false;
+            }
+        }
+    </script>
+    <form action="/edit" method="post" onsubmit="return validateform();">
+        <div class="input-group mainform">
+            <span class="my-auto mx-2">sulai.pw/</span>
+            <input autofocus autocomplete="off" class="form-control" name="customurl" id="customurl"
+                type="text" value='{{shorturl}}' onfocus="this.select()">
+            <div class="input-group-append">
+                <input readonly="readonly" class="form-control" name="longurl" type="text" value='{{longurl}}'>
+                <button class="btn btn-outline-primary" type="submit">Custom!</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Reserve URL
+{% endblock %}
+
+{% block main %}
+    <h4>Reserve a URL</h4> <br>
+    <script>
+        function validateform() {
+            var weburl = document.getElementById("reserveurl");
+            if (! weburl.value) {
+                alert("You must provide a url");
+                return false;
+            }
+        }
+    </script>
+    <p>Request a short link, input the source link later. You can reserve up to 5 links.</p>
+    <form action="/reserve" method="post" onsubmit="return validateform();">
+        <div class="input-group mainform">
+            <span class="my-auto mr-2" style="margin-left: 16%;">sulai.pw/</span>
+            <div class="input-group-append">
+                <input autofocus autocomplete="off" class="form-control" name="reserveurl" id="reserveurl"
+                    type="text" value='yoururl' onfocus="this.select();">
+                <button class="btn btn-outline-primary" type="submit">Reserve!</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

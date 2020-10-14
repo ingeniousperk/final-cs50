@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Link Ready
+{% endblock %}
+
+{% block main %}
+    <h4>Your link summary</h4> <br>
+    <table class="table table-borderless text-left mb-5">
+        <tr>
+            <th class="text-success">Shortened link</th>
+            <th class="text-primary">Original link</th>
+            <th>Action</th>
+        </tr>
+        {% for data in hisdata %}
+        <tr>
+            {% set shorturl = data['short'] %}
+            {% set weburl = data['original'] %}
+            <td><a href={{shorturl}} target='_blank'>sulai.pw/{{shorturl}}</a></td>
+            <td><a href={{weburl}} target='_blank' style="font-size: .75rem; text-decoration: none">{{weburl}}</a></td>
+            <td>
+                <div class="dropdown d-inline-block m-auto">
+                    <button class="btn btn-light btn-sm dropdown-toggle" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{{url_for('login',fromnoip=True)}}">Customize</a>
+                        <a class="dropdown-item" href="{{url_for('freeshort',fromnoip=True,action='delete',shorturl=shorturl)}}">Delete</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h4>Shorten another!</h4> <br>
+    <script>
+        function validateform() {
+            var weburl = document.getElementById("weburl");
+            if (! weburl.value) {
+                alert("You must provide a url");
+                return false;
+            }
+        }
+    </script>
+    <form action="/freeshort" method="post" onsubmit="return validateform();">
+        <div class="input-group mainform">
+            <input autocomplete="off" class="form-control" name="weburl" id="weburl" placeholder="Your long url" type="text">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">Shorten!</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

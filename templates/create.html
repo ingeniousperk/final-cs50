@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create Link
+{% endblock %}
+
+{% block main %}
+    <h4>Shorten your link in one click!</h4> <br>
+    <script>
+        function validateform() {
+            var weburl = document.getElementById("weburl");
+            if (! weburl.value) {
+                alert("You must provide a url");
+                return false;
+            }
+        }
+    </script>
+    <form action="/create" method="post" onsubmit="return validateform();">
+        <div class="input-group mainform">
+            <input autofocus autocomplete="off" class="form-control" name="weburl" id="weburl" placeholder="Your long url" type="text">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">Shorten!</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

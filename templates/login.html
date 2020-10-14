@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+    <h4>Login to your account</h4> <br>
+    <script>
+        function validateform() {
+            username = document.getElementById("username");
+            password = document.getElementById("password");
+            if (! username.value) {
+                username.classList.add("is-invalid");
+                return false;
+            }
+            if (! password.value) {
+                password.classList.add("is-invalid");
+                return false;
+            }
+        }
+    </script>
+    <form action="/login" method="post" class="was-validated" onsubmit="return validateform()">
+        <div class="form-group">
+            <input autofocus class="form-control" name="username" id="username" placeholder="Username" type="text">
+            <div class="invalid-feedback">Please fill your username.</div>
+        </div>
+        <div class="form-group">
+            <input autocomplete="current-password" class="form-control" name="password" id="password" placeholder="Password" type="password">
+            <div class="invalid-feedback">Please fill your password.</div>
+        </div>
+        <button class="btn btn-primary" type="submit">Log In</button>
+    </form> <br><br>
+    Do not have account yet? <a href="/register">Sign Up</a>
+{% endblock %}
